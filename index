@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Confirmation</title>
+    <title>Moving Services Quote</title>
     <style>
         :root {
             /* Just Move Vancouver Theme Colors */
-            --primary-color: #2563eb;
+            --primary-color: #001f3f;
             --secondary-color: #1e40af;
             --accent-color: #ea580c;
             --text-dark: #1f2937;
@@ -23,7 +23,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+           
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
@@ -83,107 +83,55 @@
             padding: 30px;
         }
 
-        .quote-summary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            color: white;
-            text-align: center;
-        }
-
-        .quote-summary h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
-        .price-display {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .hours-display {
-            font-size: 16px;
-            opacity: 0.8;
-        }
-
         .form-section {
             margin-bottom: 25px;
         }
 
         .section-title {
             color: var(--accent-color);
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .button-group {
+            margin-bottom: 15px;
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            align-items: center;
+            gap: 8px;
         }
 
-        .confirm-btn, .modify-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
+        .section-number {
+            background: var(--accent-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .confirm-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-
-        .confirm-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-        }
-
-        .modify-btn {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #c2410c 100%);
-            color: white;
-        }
-
-        .modify-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
-        }
-
-        .modification-section {
-            display: none;
-            background: var(--background-light);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
-        }
-
-        .modification-section.show {
-            display: block;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
         label {
             display: block;
             color: var(--text-dark);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        input[type="number"] {
+        input[type="number"], select {
             width: 100%;
             padding: 12px 15px;
             background: var(--background-dark);
@@ -194,7 +142,7 @@
             transition: all 0.3s ease;
         }
 
-        input[type="number"]:focus {
+        input[type="number"]:focus, select:focus {
             outline: none;
             border-color: var(--accent-color);
             box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
@@ -205,27 +153,42 @@
             opacity: 0.7;
         }
 
-        .submit-modification-btn {
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        .submit-btn {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
-        .submit-modification-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
         }
 
         @media (max-width: 600px) {
-            .button-group {
+            .form-row {
                 flex-direction: column;
+                gap: 0;
             }
         }
     </style>
@@ -234,116 +197,118 @@
     <div class="form-container">
         <div class="form-header">
             <div class="logo">
-                <img src="{{ $json.logoURL }}" alt="Company Logo">
+                <img src="https://i.imgur.com/xD5Q6XC.png" alt="Company Logo">
             </div>
-            <h1 class="form-title">{{ $json.companyName }}</h1>
-            <p class="form-subtitle">Quote Confirmation - Quote #{{ $json.quoteNumber }}</p>
+            <h1 class="form-title">Just Move Vancouver</h1>
+            <p class="form-subtitle">Service Quote Calculator - Quote #Q-0030</p>
         </div>
 
         <div class="form-body">
-            <div class="quote-summary">
-                <h3>Calculated Quote</h3>
-                <div class="price-display">${{ $json.afterTax }}</div>
-                <div class="hours-display">Total Time: {{ $json.totalHours }} hours</div>
-            </div>
-
-            <div class="form-section">
-                <div class="section-title">
-                    Ready to send this quote to the customer?
-                </div>
-
-                <div class="button-group">
-                    <button type="button" class="confirm-btn" onclick="confirmQuote()">
-                        ✅ Confirm & Send
-                    </button>
-                    <button type="button" class="modify-btn" onclick="showModification()">
-                        ✏️ Add Time
-                    </button>
-                </div>
-
-                <div class="modification-section" id="modificationSection">
-                    <div class="form-group">
-                        <label for="additionalMinutes">How many additional minutes would you like to add?</label>
-                        <input type="number" 
-                               id="additionalMinutes" 
-                               name="additionalMinutes" 
-                               placeholder="Enter minutes to add" 
-                               min="0" 
-                               step="1">
+            <form id="movingQuoteForm">
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-number">1</span>
+                        Pricing Information
                     </div>
-                    <button type="button" class="submit-modification-btn" onclick="submitModification()">
-                        Update Quote & Send
-                    </button>
+                    
+                    <div class="form-group">
+                        <label for="pricePerHour">What is the price per hour?</label>
+                        <input type="number" id="pricePerHour" name="pricePerHour" placeholder="Enter hourly rate" min="0" step="0.01" required>
+                    </div>
                 </div>
-            </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-number">2</span>
+                        Service Duration
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="garbageDisposal">How long will garbage disposal take?</label>
+                            <select id="garbageDisposal" name="garbageDisposal" required>
+                                <option value="">Select duration</option>
+                                <option value="0">0 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="90">1 hour and a half</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="extraTravelTime">Is there any extra travel time (in MINUTES)?</label>
+                            <input type="number" id="extraTravelTime" name="extraTravelTime" placeholder="Enter minutes" min="0" step="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pianoTime">How long extra will the piano take?</label>
+                        <select id="pianoTime" name="pianoTime" required>
+                            <option value="">Select duration</option>
+                            <option value="0">0 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">1 hour</option>
+                            <option value="90">1 hour and a half</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Calculate Quote</button>
+            </form>
         </div>
     </div>
 
     <script>
-        function showModification() {
-            document.getElementById('modificationSection').classList.add('show');
-            document.getElementById('additionalMinutes').focus();
-        }
-
-        function confirmQuote() {
-            const confirmData = {
-                action: "confirm",
-                quoteNumber: "{{ $json.quoteNumber }}",
-                companyName: "{{ $json.companyName }}",
-                afterTax: "{{ $json.afterTax }}",
-                totalHours: "{{ $json.totalHours }}",
-                additionalMinutes: 0,
+        // Form submission handler
+        document.getElementById('movingQuoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                messageID: "198ce273430faac4"
+                quoteNumber: "Q-0030",
+                companyName: "Just Move Vancouver",
+                pricePerHour: parseFloat(document.getElementById('pricePerHour').value),
+                garbageDisposal: parseInt(document.getElementById('garbageDisposal').value),
+                extraTravelTime: parseInt(document.getElementById('extraTravelTime').value) || 0,
+                pianoTime: parseInt(document.getElementById('pianoTime').value),
                 timestamp: new Date().toISOString()
             };
             
-            submitToWebhook(confirmData, "Quote confirmed and sent to customer!");
-        }
-
-        function submitModification() {
-            const additionalMinutes = parseInt(document.getElementById('additionalMinutes').value) || 0;
-            
-            if (additionalMinutes <= 0) {
-                alert('Please enter a valid number of minutes to add.');
-                return;
-            }
-
-            const modifyData = {
-                action: "modify",
-                quoteNumber: "{{ $json.quoteNumber }}",
-                ownerName: "{{ $json.ownerName }}", 
-                companyName: "{{ $json.companyName }}",
-                afterTax: "{{ $json.afterTax }}",
-                totalHours: "{{ $json.totalHours }}",
-                additionalMinutes: additionalMinutes,
-                timestamp: new Date().toISOString()
-            };
-            
-            submitToWebhook(modifyData, `Quote updated with ${additionalMinutes} additional minutes and sent to customer!`);
-        }
-
-        function submitToWebhook(data, successMessage) {
-            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/ad1e4a90-b38e-4c7e-b4e6-fcfee2865636', {
+            // Send to webhook
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/d77559ed-cf8b-468b-80c2-f83c30bb3a38', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(formData)
             })
             .then(response => {
                 if (response.ok) {
-                    alert('✅ ' + successMessage);
-                    // Disable all buttons after successful submission
-                    document.querySelectorAll('button').forEach(btn => btn.disabled = true);
+                    alert('✅ Quote submitted successfully!\n\n📱 You will receive another Slack notification in a few seconds where you can confirm or change the price before it gets sent to the customer.');
                 } else {
                     throw new Error('Network response was not ok');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error submitting response. Please try again.');
-                console.log('Form Data:', data);
+                alert('Error submitting quote. Please try again.');
+                // Fallback: log data to console
+                console.log('Form Data:', formData);
             });
-        }
+        });
+
+        // Add subtle animations
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
     </script>
 </body>
 </html>
