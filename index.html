@@ -185,6 +185,16 @@
             transform: translateY(0);
         }
 
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
         @media (max-width: 600px) {
             .form-row {
                 flex-direction: column;
@@ -200,10 +210,14 @@
                 <img src="https://i.imgur.com/xD5Q6XC.png" alt="Company Logo">
             </div>
             <h1 class="form-title">Just Move Vancouver</h1>
-            <p class="form-subtitle">Service Quote Calculator - Quote #Q-0030</p>
+            <p class="form-subtitle">Service Quote Calculator - <span id="quoteNumberDisplay">Quote #Q-0000</span></p>
         </div>
 
         <div class="form-body">
+            <div id="errorMessage" class="error-message">
+                Missing quote parameters. Please use the link provided in your Slack message.
+            </div>
+
             <form id="movingQuoteForm">
                 <div class="form-section">
                     <div class="section-title">
@@ -261,15 +275,49 @@
     </div>
 
     <script>
+        // Extract URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const quoteId = urlParams.get('quote') || urlParams.get('quoteId');
+        const pricePerHour = urlParams.get('rate') || urlParams.get('pricePerHour');
+        const messageId = urlParams.get('msg') || urlParams.get('messageId');
+
+        // Initialize form on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeForm();
+        });
+
+        function initializeForm() {
+            const errorDiv = document.getElementById('errorMessage');
+            const form = document.getElementById('movingQuoteForm');
+            
+            // Check if we have required parameters
+            if (!quoteId || !messageId) {
+                errorDiv.style.display = 'block';
+                form.style.opacity = '0.5';
+                form.style.pointerEvents = 'none';
+                return;
+            }
+
+            // Update quote number display
+            if (quoteId) {
+                document.getElementById('quoteNumberDisplay').textContent = `Quote #${quoteId}`;
+            }
+
+            // Pre-populate price per hour if provided
+            if (pricePerHour) {
+                document.getElementById('pricePerHour').value = pricePerHour;
+            }
+        }
+
         // Form submission handler
         document.getElementById('movingQuoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const formData = {
-                baseDrive: "10"
-                messageID: "198ce273430faac4",
-                quoteNumber: "Q-0030",
+                messageID: messageId,
+                quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
+                baseDrive: baseDrive,
                 pricePerHour: parseFloat(document.getElementById('pricePerHour').value),
                 garbageDisposal: parseInt(document.getElementById('garbageDisposal').value),
                 extraTravelTime: parseInt(document.getElementById('extraTravelTime').value) || 0,
