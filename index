@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Services Quote</title>
+    <style>
+        :root {
+            /* Just Move Vancouver Theme Colors */
+            --primary-color: #001f3f;
+            --secondary-color: #1e40af;
+            --accent-color: #ea580c;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --background-light: #f9fafb;
+            --background-dark: #ffffff;
+            --border-color: #e5e7eb;
+            --card-background: #f3f4f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+           
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: var(--card-background);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .form-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: var(--accent-color);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-number {
+            background: var(--accent-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            color: var(--text-dark);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--background-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dark);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+        }
+
+        input[type="number"]::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <div class="logo">
+                <img src="https://i.imgur.com/xD5Q6XC.png" alt="Company Logo">
+            </div>
+            <h1 class="form-title">Just Move Vancouver</h1>
+            <p class="form-subtitle">Service Quote Calculator - Quote #Q-0030</p>
+        </div>
+
+        <div class="form-body">
+            <form id="movingQuoteForm">
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-number">1</span>
+                        Pricing Information
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pricePerHour">What is the price per hour?</label>
+                        <input type="number" id="pricePerHour" name="pricePerHour" placeholder="Enter hourly rate" min="0" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="section-number">2</span>
+                        Service Duration
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="garbageDisposal">How long will garbage disposal take?</label>
+                            <select id="garbageDisposal" name="garbageDisposal" required>
+                                <option value="">Select duration</option>
+                                <option value="0">0 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="90">1 hour and a half</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="extraTravelTime">Is there any extra travel time (in MINUTES)?</label>
+                            <input type="number" id="extraTravelTime" name="extraTravelTime" placeholder="Enter minutes" min="0" step="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pianoTime">How long extra will the piano take?</label>
+                        <select id="pianoTime" name="pianoTime" required>
+                            <option value="">Select duration</option>
+                            <option value="0">0 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">1 hour</option>
+                            <option value="90">1 hour and a half</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Calculate Quote</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form submission handler
+        document.getElementById('movingQuoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                messageID: "198ce273430faac4"
+                quoteNumber: "Q-0030",
+                companyName: "Just Move Vancouver",
+                pricePerHour: parseFloat(document.getElementById('pricePerHour').value),
+                garbageDisposal: parseInt(document.getElementById('garbageDisposal').value),
+                extraTravelTime: parseInt(document.getElementById('extraTravelTime').value) || 0,
+                pianoTime: parseInt(document.getElementById('pianoTime').value),
+                timestamp: new Date().toISOString()
+            };
+            
+            // Send to webhook
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/d77559ed-cf8b-468b-80c2-f83c30bb3a38', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('✅ Quote submitted successfully!\n\n📱 You will receive another Slack notification in a few seconds where you can confirm or change the price before it gets sent to the customer.');
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting quote. Please try again.');
+                // Fallback: log data to console
+                console.log('Form Data:', formData);
+            });
+        });
+
+        // Add subtle animations
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
