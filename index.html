@@ -313,17 +313,50 @@
         document.getElementById('movingQuoteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            console.log('Form submission started...');
+            
+            // Validate required fields
+            const priceInput = document.getElementById('pricePerHour');
+            const garbageSelect = document.getElementById('garbageDisposal');
+            const pianoSelect = document.getElementById('pianoTime');
+            
+            if (!priceInput.value) {
+                alert('❌ Please enter a price per hour');
+                console.error('Missing price per hour');
+                return;
+            }
+            
+            if (!garbageSelect.value) {
+                alert('❌ Please select garbage disposal duration');
+                console.error('Missing garbage disposal selection');
+                return;
+            }
+            
+            if (!pianoSelect.value) {
+                alert('❌ Please select piano time duration');
+                console.error('Missing piano time selection');
+                return;
+            }
+            
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
-                baseDrive: baseDrive,
-                pricePerHour: parseFloat(document.getElementById('pricePerHour').value),
-                garbageDisposal: parseInt(document.getElementById('garbageDisposal').value),
+                baseDrive: parseInt(baseDrive) || 0,
+                pricePerHour: parseFloat(priceInput.value),
+                garbageDisposal: parseInt(garbageSelect.value),
                 extraTravelTime: parseInt(document.getElementById('extraTravelTime').value) || 0,
-                pianoTime: parseInt(document.getElementById('pianoTime').value),
+                pianoTime: parseInt(pianoSelect.value),
                 timestamp: new Date().toISOString()
             };
+            
+            console.log('Form data to submit:', formData);
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
             
             // Send to webhook
             fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/d77559ed-cf8b-468b-80c2-f83c30bb3a38', {
@@ -334,17 +367,29 @@
                 body: JSON.stringify(formData)
             })
             .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
                 if (response.ok) {
+                    console.log('✅ Webhook request successful');
                     alert('✅ Quote submitted successfully!\n\n📱 You will receive another Slack notification in a few seconds where you can confirm or change the price before it gets sent to the customer.');
                 } else {
-                    throw new Error('Network response was not ok');
+                    console.error('❌ Webhook request failed with status:', response.status);
+                    return response.text().then(text => {
+                        console.error('Error response body:', text);
+                        throw new Error(`Server responded with ${response.status}: ${text}`);
+                    });
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Error submitting quote. Please try again.');
-                // Fallback: log data to console
-                console.log('Form Data:', formData);
+                console.error('❌ Fetch error:', error);
+                alert(`❌ Error submitting quote: ${error.message}\n\nPlease try again or contact support if the problem persists.`);
+                console.log('📋 Form data for debugging:', formData);
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             });
         });
 
