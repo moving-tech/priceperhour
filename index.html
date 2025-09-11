@@ -280,6 +280,7 @@
         const quoteId = urlParams.get('quote') || urlParams.get('quoteId');
         const pricePerHour = urlParams.get('rate') || urlParams.get('pricePerHour');
         const messageId = urlParams.get('msg') || urlParams.get('messageId');
+        const baseDrive = urlParams.get('baseDrive') || 0;
 
         // Initialize form on page load
         document.addEventListener('DOMContentLoaded', function() {
