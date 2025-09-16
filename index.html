@@ -10,6 +10,7 @@
             --primary-color: #001f3f;
             --secondary-color: #1e40af;
             --accent-color: #ea580c;
+            --success-color: #10b981;
             --text-dark: #1f2937;
             --text-light: #6b7280;
             --background-light: #f9fafb;
@@ -157,16 +158,111 @@
             cursor: pointer;
         }
 
-        select option {
-            background: var(--background-dark);
-            color: var(--text-dark);
+        .calculation-results {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+            animation: slideIn 0.3s ease-out;
         }
 
-        .submit-btn {
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calculation-results h3 {
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .result-total {
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .adjustment-section {
+            background: var(--background-dark);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .adjustment-title {
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .time-adjuster {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .time-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .time-btn:hover {
+            background: #c2410c;
+            transform: scale(1.1);
+        }
+
+        .time-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .time-display {
+            background: var(--card-background);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
@@ -176,13 +272,40 @@
             margin-top: 10px;
         }
 
-        .submit-btn:hover {
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c2410c 100%);
+            color: white;
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
         }
 
         .error-message {
@@ -193,6 +316,21 @@
             margin-bottom: 20px;
             font-size: 14px;
             display: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 600px) {
@@ -234,7 +372,7 @@
                 <div class="form-section">
                     <div class="section-title">
                         <span class="section-number">2</span>
-                        Service Duration
+                        Service Duration & Add-ons
                     </div>
                     
                     <div class="form-row">
@@ -251,8 +389,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="extraTravelTime">Is there any extra travel time (in MINUTES)?</label>
-                            <input type="number" id="extraTravelTime" name="extraTravelTime" placeholder="Enter minutes" min="0" step="1">
+                            <label for="extraTravelTime">Extra travel time (in MINUTES)?</label>
+                            <input type="number" id="extraTravelTime" name="extraTravelTime" placeholder="Enter minutes" min="0" step="1" value="0">
                         </div>
                     </div>
 
@@ -269,29 +407,74 @@
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn">Calculate Quote</button>
+                <button type="button" id="calculateBtn" class="btn btn-primary">Calculate Initial Quote</button>
+
+                <div id="calculationResults" class="calculation-results">
+                    <h3>Calculated Quote</h3>
+                    <div class="result-row">
+                        <span>Total Hours:</span>
+                        <span id="totalHoursDisplay">0 hours</span>
+                    </div>
+                    <div class="result-row result-total">
+                        <span>Final Price (incl. taxes):</span>
+                        <span id="finalPriceDisplay">$0</span>
+                    </div>
+                </div>
+
+                <div id="adjustmentSection" class="adjustment-section">
+                    <h4 class="adjustment-title">Adjust Service Time</h4>
+                    <p style="text-align: center; margin-bottom: 15px; color: var(--text-light);">
+                        Make adjustments in 15-minute increments
+                    </p>
+                    
+                    <div class="time-adjuster">
+                        <button type="button" id="decreaseBtn" class="time-btn">−</button>
+                        <div class="time-display" id="adjustedTimeDisplay">0.00 hrs</div>
+                        <button type="button" id="increaseBtn" class="time-btn">+</button>
+                    </div>
+
+                    <button type="button" id="recalculateBtn" class="btn btn-warning">Calculate New Quote Price</button>
+                </div>
+
+                <button type="button" id="confirmBtn" class="btn btn-success" style="display: none;">
+                    Confirm & Send Quote to Customer
+                </button>
             </form>
         </div>
     </div>
 
     <script>
-        // Extract URL parameters
+        // Extract URL parameters (global scope)
         const urlParams = new URLSearchParams(window.location.search);
         const quoteId = urlParams.get('quote') || urlParams.get('quoteId');
         const pricePerHour = urlParams.get('rate') || urlParams.get('pricePerHour');
         const messageId = urlParams.get('msg') || urlParams.get('messageId');
-        const baseDrive = urlParams.get('baseDrive') || 0;
+        const baseDrive = parseFloat(urlParams.get('baseDrive')) || 0;
+
+        // Global variables for quote state
+        let originalQuoteData = null;
+        let adjustedHours = 0;
+        let currentCalculatedData = null;
+
+        // Debug logging
+        console.log('URL Parameters:', {
+            quoteId,
+            pricePerHour,
+            messageId,
+            baseDrive,
+            fullURL: window.location.href
+        });
 
         // Initialize form on page load
         document.addEventListener('DOMContentLoaded', function() {
             initializeForm();
+            setupEventListeners();
         });
 
         function initializeForm() {
             const errorDiv = document.getElementById('errorMessage');
             const form = document.getElementById('movingQuoteForm');
             
-            // Check if we have required parameters
             if (!quoteId || !messageId) {
                 errorDiv.style.display = 'block';
                 form.style.opacity = '0.5';
@@ -299,22 +482,32 @@
                 return;
             }
 
-            // Update quote number display
             if (quoteId) {
                 document.getElementById('quoteNumberDisplay').textContent = `Quote #${quoteId}`;
             }
 
-            // Pre-populate price per hour if provided
             if (pricePerHour) {
                 document.getElementById('pricePerHour').value = pricePerHour;
             }
         }
 
-        // Form submission handler
-        document.getElementById('movingQuoteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function setupEventListeners() {
+            // Calculate initial quote button
+            document.getElementById('calculateBtn').addEventListener('click', calculateInitialQuote);
             
-            console.log('Form submission started...');
+            // Time adjustment buttons
+            document.getElementById('decreaseBtn').addEventListener('click', () => adjustTime(-0.25));
+            document.getElementById('increaseBtn').addEventListener('click', () => adjustTime(0.25));
+            
+            // Recalculate button
+            document.getElementById('recalculateBtn').addEventListener('click', recalculateQuote);
+            
+            // Confirm button
+            document.getElementById('confirmBtn').addEventListener('click', confirmQuote);
+        }
+
+        function calculateInitialQuote() {
+            console.log('Calculate initial quote button clicked...');
             
             // Validate required fields
             const priceInput = document.getElementById('pricePerHour');
@@ -322,28 +515,25 @@
             const pianoSelect = document.getElementById('pianoTime');
             
             if (!priceInput.value) {
-                alert('❌ Please enter a price per hour');
-                console.error('Missing price per hour');
+                alert('Please enter a price per hour');
                 return;
             }
             
             if (!garbageSelect.value) {
-                alert('❌ Please select garbage disposal duration');
-                console.error('Missing garbage disposal selection');
+                alert('Please select garbage disposal duration');
                 return;
             }
             
             if (!pianoSelect.value) {
-                alert('❌ Please select piano time duration');
-                console.error('Missing piano time selection');
+                alert('Please select piano time duration');
                 return;
             }
-            
+
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
-                baseDrive: parseInt(baseDrive) || 0,
+                baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
                 garbageDisposal: parseInt(garbageSelect.value),
                 extraTravelTime: parseInt(document.getElementById('extraTravelTime').value) || 0,
@@ -354,12 +544,12 @@
             console.log('Form data to submit:', formData);
             
             // Show loading state
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
+            const calculateBtn = document.getElementById('calculateBtn');
+            const originalText = calculateBtn.textContent;
+            calculateBtn.innerHTML = '<span class="loading-spinner"></span>Calculating...';
+            calculateBtn.disabled = true;
             
-            // Send to webhook
+            // Send to workflow for calculation
             fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/d77559ed-cf8b-468b-80c2-f83c30bb3a38', {
                 method: 'POST',
                 headers: {
@@ -369,41 +559,176 @@
             })
             .then(response => {
                 console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
                 
                 if (response.ok) {
-                    console.log('✅ Webhook request successful');
-                    alert('✅ Quote submitted successfully!\n\n📱 You will receive another Slack notification in a few seconds where you can confirm or change the price before it gets sent to the customer.');
+                    return response.json();
                 } else {
-                    console.error('❌ Webhook request failed with status:', response.status);
-                    return response.text().then(text => {
-                        console.error('Error response body:', text);
-                        throw new Error(`Server responded with ${response.status}: ${text}`);
-                    });
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+            })
+            .then(data => {
+                console.log('Initial calculation response:', data);
+                
+                // Expecting: messageID, quoteNumber, companyName, quotedHours, afterTax
+                if (data.quotedHours !== undefined && data.afterTax !== undefined) {
+                    originalQuoteData = data;
+                    currentCalculatedData = data;
+                    adjustedHours = parseFloat(data.quotedHours);
+                    displayCalculationResults(data);
+                    showAdjustmentSection();
+                } else {
+                    throw new Error('Invalid response data from calculation workflow');
                 }
             })
             .catch(error => {
-                console.error('❌ Fetch error:', error);
-                alert(`❌ Error submitting quote: ${error.message}\n\nPlease try again or contact support if the problem persists.`);
-                console.log('📋 Form data for debugging:', formData);
+                console.error('Calculation error:', error);
+                alert(`Error calculating quote: ${error.message}\n\nPlease try again or contact support.`);
             })
             .finally(() => {
-                // Reset button state
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                // Reset calculate button
+                calculateBtn.textContent = originalText;
+                calculateBtn.disabled = false;
             });
-        });
+        }
 
-        // Add subtle animations
-        document.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'translateY(-2px)';
-            });
+        function displayCalculationResults(data) {
+            // Update the display with calculated values
+            document.getElementById('totalHoursDisplay').textContent = `${parseFloat(data.quotedHours).toFixed(2)} hours`;
+            document.getElementById('finalPriceDisplay').textContent = `$${parseFloat(data.afterTax).toFixed(2)}`;
             
-            element.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'translateY(0)';
+            // Show results section
+            document.getElementById('calculationResults').style.display = 'block';
+        }
+
+        function showAdjustmentSection() {
+            document.getElementById('adjustmentSection').style.display = 'block';
+            updateAdjustedTimeDisplay();
+        }
+
+        function adjustTime(increment) {
+            adjustedHours = Math.max(0, adjustedHours + increment);
+            updateAdjustedTimeDisplay();
+            
+            // Enable/disable decrease button based on whether we can go lower
+            document.getElementById('decreaseBtn').disabled = (adjustedHours <= 0);
+        }
+
+        function updateAdjustedTimeDisplay() {
+            document.getElementById('adjustedTimeDisplay').textContent = `${adjustedHours.toFixed(2)} hrs`;
+        }
+
+        function recalculateQuote() {
+            if (!originalQuoteData) {
+                alert('Please calculate initial quote first.');
+                return;
+            }
+
+            const recalculateData = {
+                messageID: messageId,
+                quoteNumber: quoteId,
+                companyName: originalQuoteData.companyName,
+                adjustedHours: adjustedHours,
+                recalculate: true,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Recalculating with data:', recalculateData);
+            
+            // Show loading state
+            const recalculateBtn = document.getElementById('recalculateBtn');
+            const originalText = recalculateBtn.textContent;
+            recalculateBtn.innerHTML = '<span class="loading-spinner"></span>Recalculating...';
+            recalculateBtn.disabled = true;
+            
+            // Send adjusted hours back to workflow (you'll need a separate webhook for this)
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/YOUR-RECALCULATION-WEBHOOK-ID', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(recalculateData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+            })
+            .then(data => {
+                console.log('Recalculation response:', data);
+                
+                // Update with new calculated values
+                currentCalculatedData = data;
+                displayCalculationResults(data);
+                
+                // Show confirm button
+                document.getElementById('confirmBtn').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Recalculation error:', error);
+                alert(`Error recalculating quote: ${error.message}`);
+            })
+            .finally(() => {
+                // Reset recalculate button
+                recalculateBtn.textContent = originalText;
+                recalculateBtn.disabled = false;
             });
-        });
+        }
+
+        function confirmQuote() {
+            if (!currentCalculatedData) {
+                alert('Please calculate the quote first.');
+                return;
+            }
+            
+            const confirmData = {
+                action: "confirm",
+                quoteNumber: quoteId,
+                messageID: messageId,
+                quotedHours: currentCalculatedData.quotedHours,
+                afterTax: currentCalculatedData.afterTax,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Confirming quote with data:', confirmData);
+            
+            // Show loading state
+            const confirmBtn = document.getElementById('confirmBtn');
+            confirmBtn.innerHTML = '<span class="loading-spinner"></span>Sending Quote...';
+            confirmBtn.disabled = true;
+            
+            // Send confirmation to your final quote sending workflow
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/YOUR-CONFIRMATION-WEBHOOK-ID', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(confirmData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Quote sent successfully to customer!');
+                    confirmBtn.textContent = 'Quote Sent ✓';
+                    confirmBtn.style.background = 'var(--success-color)';
+                    confirmBtn.disabled = true;
+                    
+                    // Disable all other buttons
+                    document.getElementById('calculateBtn').disabled = true;
+                    document.getElementById('recalculateBtn').disabled = true;
+                    document.getElementById('decreaseBtn').disabled = true;
+                    document.getElementById('increaseBtn').disabled = true;
+                } else {
+                    throw new Error('Failed to send quote confirmation');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending quote confirmation. Please try again.');
+                confirmBtn.textContent = 'Confirm & Send Quote to Customer';
+                confirmBtn.disabled = false;
+            });
+        }
     </script>
 </body>
 </html>
