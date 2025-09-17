@@ -640,8 +640,8 @@
             recalculateBtn.innerHTML = '<span class="loading-spinner"></span>Recalculating...';
             recalculateBtn.disabled = true;
             
-            // Send adjusted hours back to workflow (you'll need a separate webhook for this)
-            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/YOUR-RECALCULATION-WEBHOOK-ID', {
+            // Send adjusted hours to recalculation workflow
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/ad1e4a90-b38e-4c7e-b4e6-fcfee2865636', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
