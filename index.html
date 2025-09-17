@@ -630,16 +630,18 @@
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: originalQuoteData.companyName,
+                baseHours: parseFloat(originalQuoteData.baseHours),
                 hoursDifference: adjustedHours - parseFloat(originalQuoteData.quotedHours),
+                newTotalHours: adjustedHours,
                 airtableID: originalQuoteData.airtableID,
                 recalculate: true,
                 timestamp: new Date().toISOString()
             };
             
             console.log('Recalculating with data:', recalculateData);
-            console.log('Original hours:', recalculateData.originalQuotedHours);
-            console.log('Adjusted hours:', recalculateData.adjustedHours);
+            console.log('Base hours:', recalculateData.baseHours);
             console.log('Hours difference:', recalculateData.hoursDifference);
+            console.log('New total hours:', recalculateData.newTotalHours);
             console.log('Including airtableID:', recalculateData.airtableID);
             
             // Show loading state
@@ -709,7 +711,7 @@
             confirmBtn.disabled = true;
             
             // Send confirmation to your final quote sending workflow
-            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/YOUR-CONFIRMATION-WEBHOOK-ID', {
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/ad1e4a90-b38e-4c7e-b4e6-fcfee2865636', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
