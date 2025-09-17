@@ -569,11 +569,14 @@
             .then(data => {
                 console.log('Initial calculation response:', data);
                 
-                // Expecting: messageID, quoteNumber, companyName, quotedHours, afterTax
+                // Expecting: messageID, quoteNumber, companyName, quotedHours, afterTax, airtableID
                 if (data.quotedHours !== undefined && data.afterTax !== undefined) {
                     originalQuoteData = data;
                     currentCalculatedData = data;
                     adjustedHours = parseFloat(data.quotedHours);
+                    
+                    console.log('Stored airtableID:', data.airtableID);
+                    
                     displayCalculationResults(data);
                     showAdjustmentSection();
                 } else {
@@ -628,11 +631,13 @@
                 quoteNumber: quoteId,
                 companyName: originalQuoteData.companyName,
                 adjustedHours: adjustedHours,
+                airtableID: originalQuoteData.airtableID,
                 recalculate: true,
                 timestamp: new Date().toISOString()
             };
             
             console.log('Recalculating with data:', recalculateData);
+            console.log('Including airtableID:', recalculateData.airtableID);
             
             // Show loading state
             const recalculateBtn = document.getElementById('recalculateBtn');
@@ -688,10 +693,12 @@
                 messageID: messageId,
                 quotedHours: currentCalculatedData.quotedHours,
                 afterTax: currentCalculatedData.afterTax,
+                airtableID: currentCalculatedData.airtableID,
                 timestamp: new Date().toISOString()
             };
             
             console.log('Confirming quote with data:', confirmData);
+            console.log('Including airtableID:', confirmData.airtableID);
             
             // Show loading state
             const confirmBtn = document.getElementById('confirmBtn');
