@@ -513,6 +513,7 @@
             const priceInput = document.getElementById('pricePerHour');
             const garbageSelect = document.getElementById('garbageDisposal');
             const pianoSelect = document.getElementById('pianoTime');
+            const extraTravelSelect = document.getElementById('extraTravelTime');
             
             if (!priceInput.value) {
                 alert('Please enter a price per hour');
@@ -529,6 +530,11 @@
                 return;
             }
 
+            if (!extraTravelSelect.value) {
+                alert('Please select extra travel time duration');
+                return;
+            }
+
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
@@ -536,7 +542,7 @@
                 baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
                 garbageDisposal: parseInt(garbageSelect.value),
-                extraTravelTime: parseInt(document.getElementById('extraTravelTime').value) || 0,
+                extraTravelTime: parseInt(extraTravelSelect.value),
                 pianoTime: parseInt(pianoSelect.value),
                 timestamp: new Date().toISOString()
             };
