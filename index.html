@@ -600,9 +600,29 @@
             });
         }
 
+        function formatHoursDisplay(decimalHours) {
+            const hours = Math.floor(decimalHours);
+            const minutes = Math.round((decimalHours - hours) * 60);
+            
+            let timeString = '';
+            if (hours > 0) {
+                timeString += `${hours} hour${hours !== 1 ? 's' : ''}`;
+            }
+            if (minutes > 0) {
+                if (hours > 0) timeString += ' ';
+                timeString += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+            }
+            if (timeString === '') {
+                timeString = '0 minutes';
+            }
+            
+            return `${timeString} (${decimalHours.toFixed(2)})`;
+        }
+
         function displayCalculationResults(data) {
             // Update the display with calculated values
-            document.getElementById('totalHoursDisplay').textContent = `${parseFloat(data.quotedHours).toFixed(2)} hours`;
+            const quotedHours = parseFloat(data.quotedHours);
+            document.getElementById('totalHoursDisplay').textContent = formatHoursDisplay(quotedHours);
             document.getElementById('finalPriceDisplay').textContent = `$${parseFloat(data.afterTax).toFixed(2)}`;
             
             // Show results section
@@ -623,7 +643,7 @@
         }
 
         function updateAdjustedTimeDisplay() {
-            document.getElementById('adjustedTimeDisplay').textContent = `${adjustedHours.toFixed(2)} hrs`;
+            document.getElementById('adjustedTimeDisplay').textContent = formatHoursDisplay(adjustedHours);
         }
 
         function recalculateQuote() {
