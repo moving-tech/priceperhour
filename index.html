@@ -228,112 +228,135 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            border-radius: 50%;
             width: 40px;
             height: 40px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .time-btn:hover {
-            background: #c2410c;
-            transform: scale(1.1);
-        }
-
-        .time-btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .time-display {
-            background: var(--card-background);
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-dark);
-            min-width: 120px;
-            text-align: center;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 50%;
+            font-size: 20px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn:disabled {
+        .time-btn:hover:not(:disabled) {
+            background: #c2410c;
+            transform: scale(1.05);
+        }
+
+        .time-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .adjusted-time {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-color);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), #c2410c);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(234, 88, 12, 0.3);
+        }
+
+        .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary-color), #1e3a8a);
             color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .btn-primary:hover:not(:disabled) {
+        .btn-secondary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
-            color: white;
+        .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .btn-success:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #c2410c 100%);
-            color: white;
-        }
-
-        .btn-warning:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
+        .btn-confirm {
+            background: linear-gradient(135deg, var(--success-color), #059669);
             display: none;
+            margin-top: 15px;
+        }
+
+        .btn-confirm:hover:not(:disabled) {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
 
         .loading-spinner {
-            display: inline-block;
             width: 16px;
             height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid white;
+            border-top: 2px solid transparent;
             border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 8px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 6px;
+            display: block;
         }
 
         @media (max-width: 600px) {
+            .form-container {
+                margin: 10px;
+            }
+            
+            .form-body {
+                padding: 20px;
+            }
+            
             .form-row {
                 flex-direction: column;
                 gap: 0;
@@ -345,183 +368,145 @@
     <div class="form-container">
         <div class="form-header">
             <div class="logo">
-                <img src="https://i.imgur.com/xD5Q6XC.png" alt="Company Logo">
+                <img src="https://storage.googleapis.com/msgsndr/AKZP9uMptF4voluntary40PZ/media/679e0919e0c0f1fe0a5e3f43.png" alt="Just Move Vancouver Logo">
             </div>
-            <h1 class="form-title">Just Move Vancouver</h1>
-            <p class="form-subtitle">Service Quote Calculator - <span id="quoteNumberDisplay">Quote #Q-0000</span></p>
+            <div class="form-title">Moving Services Quote</div>
+            <div class="form-subtitle">Calculate your customized quote</div>
         </div>
 
         <div class="form-body">
-            <div id="errorMessage" class="error-message">
-                Missing quote parameters. Please use the link provided in your Slack message.
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="section-number">1</span>
+                    Price Settings
+                </div>
+                
+                <div class="form-group">
+                    <label for="pricePerHour">Price Per Hour ($)</label>
+                    <input type="number" id="pricePerHour" placeholder="Enter price per hour" step="0.01" min="0">
+                    <span class="helper-text">Your hourly rate for the moving service</span>
+                </div>
             </div>
 
-            <form id="movingQuoteForm">
-                <div class="form-section">
-                    <div class="section-title">
-                        <span class="section-number">1</span>
-                        Pricing Information
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="pricePerHour">What is the price per hour?</label>
-                        <input type="number" id="pricePerHour" name="pricePerHour" placeholder="Enter hourly rate" min="0" step="0.01" required>
-                    </div>
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="section-number">2</span>
+                    Additional Services
                 </div>
-
-                <div class="form-section">
-                    <div class="section-title">
-                        <span class="section-number">2</span>
-                        Service Duration & Add-ons
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="garbageDisposal">Garbage Disposal (hrs)</label>
+                        <select id="garbageDisposal">
+                            <option value="">Select hours</option>
+                            <option value="0">0 hours</option>
+                            <option value="0.5">0.5 hours</option>
+                            <option value="1">1 hour</option>
+                            <option value="1.5">1.5 hours</option>
+                            <option value="2">2 hours</option>
+                            <option value="2.5">2.5 hours</option>
+                            <option value="3">3 hours</option>
+                        </select>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="garbageDisposal">How long will garbage disposal take?</label>
-                            <select id="garbageDisposal" name="garbageDisposal" required>
-                                <option value="">Select duration</option>
-                                <option value="0">0 minutes</option>
-                                <option value="30">30 minutes</option>
-                                <option value="45">45 minutes</option>
-                                <option value="60">1 hour</option>
-                                <option value="90">1 hour and a half</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="extraTravelTime">Extra travel time (in MINUTES)?</label>
-                            <input type="number" id="extraTravelTime" name="extraTravelTime" placeholder="Enter minutes" min="0" step="1" value="0">
-                        </div>
-                    </div>
-
                     <div class="form-group">
-                        <label for="pianoTime">How long extra will the piano take?</label>
-                        <select id="pianoTime" name="pianoTime" required>
-                            <option value="">Select duration</option>
-                            <option value="0">0 minutes</option>
-                            <option value="30">30 minutes</option>
-                            <option value="45">45 minutes</option>
-                            <option value="60">1 hour</option>
-                            <option value="90">1 hour and a half</option>
+                        <label for="pianoTime">Piano Time (hrs)</label>
+                        <select id="pianoTime">
+                            <option value="">Select hours</option>
+                            <option value="0">0 hours</option>
+                            <option value="0.5">0.5 hours</option>
+                            <option value="1">1 hour</option>
+                            <option value="1.5">1.5 hours</option>
+                            <option value="2">2 hours</option>
+                            <option value="2.5">2.5 hours</option>
+                            <option value="3">3 hours</option>
                         </select>
                     </div>
                 </div>
 
-                <button type="button" id="calculateBtn" class="btn btn-primary">Calculate Initial Quote</button>
-
-                <div id="calculationResults" class="calculation-results">
-                    <h3>Calculated Quote</h3>
-                    <div class="result-row">
-                        <span>Total Hours:</span>
-                        <span id="totalHoursDisplay">0 hours</span>
-                    </div>
-                    <div class="result-row result-total">
-                        <span>Final Price (incl. taxes):</span>
-                        <span id="finalPriceDisplay">$0</span>
-                    </div>
+                <div class="form-group">
+                    <label for="extraTravel">Extra Travel Time (hrs)</label>
+                    <select id="extraTravel">
+                        <option value="">Select hours</option>
+                        <option value="0">0 hours</option>
+                        <option value="0.5">0.5 hours</option>
+                        <option value="1">1 hour</option>
+                        <option value="1.5">1.5 hours</option>
+                        <option value="2">2 hours</option>
+                        <option value="2.5">2.5 hours</option>
+                        <option value="3">3 hours</option>
+                    </select>
+                    <span class="helper-text">Additional travel time if needed</span>
                 </div>
+            </div>
 
-                <div id="adjustmentSection" class="adjustment-section">
-                    <h4 class="adjustment-title">Adjust Service Time</h4>
-                    <p style="text-align: center; margin-bottom: 15px; color: var(--text-light);">
-                        Make adjustments in 15-minute increments
-                    </p>
-                    
-                    <div class="time-adjuster">
-                        <button type="button" id="decreaseBtn" class="time-btn">−</button>
-                        <div class="time-display" id="adjustedTimeDisplay">0.00 hrs</div>
-                        <button type="button" id="increaseBtn" class="time-btn">+</button>
-                    </div>
+            <button id="calculateBtn" class="btn-primary" onclick="calculateQuote()">
+                Calculate Quote
+            </button>
 
-                    <button type="button" id="recalculateBtn" class="btn btn-warning">Calculate New Quote Price</button>
+            <div id="calculationResults" class="calculation-results">
+                <h3>Quote Calculation</h3>
+                <div class="result-row">
+                    <span>Total Hours:</span>
+                    <span id="totalHoursDisplay">-</span>
                 </div>
+                <div class="result-row result-total">
+                    <span>Final Price (with tax):</span>
+                    <span id="finalPriceDisplay">$0.00</span>
+                </div>
+            </div>
 
-                <button type="button" id="confirmBtn" class="btn btn-success" style="display: none;">
+            <div id="adjustmentSection" class="adjustment-section">
+                <div class="adjustment-title">Adjust Total Hours (Optional)</div>
+                <div class="time-adjuster">
+                    <button id="decreaseBtn" class="time-btn" onclick="adjustTime(-0.5)">−</button>
+                    <div class="adjusted-time" id="adjustedTimeDisplay">0.00 hrs</div>
+                    <button id="increaseBtn" class="time-btn" onclick="adjustTime(0.5)">+</button>
+                </div>
+                <button id="recalculateBtn" class="btn-secondary" onclick="recalculateQuote()">
+                    Recalculate with Adjusted Time
+                </button>
+                <button id="confirmBtn" class="btn-primary btn-confirm" onclick="confirmQuote()">
                     Confirm & Send Quote to Customer
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
-        // Extract URL parameters (global scope)
+        // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const quoteId = urlParams.get('quote') || urlParams.get('quoteId');
-        const pricePerHour = urlParams.get('rate') || urlParams.get('pricePerHour');
-        const messageId = urlParams.get('msg') || urlParams.get('messageId');
+        const messageId = urlParams.get('messageID');
+        const quoteId = urlParams.get('quoteNumber');
         const baseDrive = parseFloat(urlParams.get('baseDrive')) || 0;
 
-        // Global variables for quote state
-        let originalQuoteData = null;
-        let adjustedHours = 0;
-        let currentCalculatedData = null;
-
-        // Debug logging
+        // Log parameters for debugging
         console.log('URL Parameters:', {
-            quoteId,
-            pricePerHour,
             messageId,
-            baseDrive,
-            fullURL: window.location.href
+            quoteId,
+            baseDrive
         });
 
-        // Initialize form on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeForm();
-            setupEventListeners();
-        });
+        // Store the original and current calculation data
+        let originalQuoteData = null;
+        let currentCalculatedData = null;
+        let adjustedHours = 0;
 
-        function initializeForm() {
-            const errorDiv = document.getElementById('errorMessage');
-            const form = document.getElementById('movingQuoteForm');
-            
-            if (!quoteId || !messageId) {
-                errorDiv.style.display = 'block';
-                form.style.opacity = '0.5';
-                form.style.pointerEvents = 'none';
-                return;
-            }
-
-            if (quoteId) {
-                document.getElementById('quoteNumberDisplay').textContent = `Quote #${quoteId}`;
-            }
-
-            if (pricePerHour) {
-                document.getElementById('pricePerHour').value = pricePerHour;
-            }
-        }
-
-        function setupEventListeners() {
-            // Calculate initial quote button
-            document.getElementById('calculateBtn').addEventListener('click', calculateInitialQuote);
-            
-            // Time adjustment buttons
-            document.getElementById('decreaseBtn').addEventListener('click', () => adjustTime(-0.25));
-            document.getElementById('increaseBtn').addEventListener('click', () => adjustTime(0.25));
-            
-            // Recalculate button
-            document.getElementById('recalculateBtn').addEventListener('click', recalculateQuote);
-            
-            // Confirm button
-            document.getElementById('confirmBtn').addEventListener('click', confirmQuote);
-        }
-
-        function calculateInitialQuote() {
-            console.log('Calculate initial quote button clicked...');
-            
-            // Validate required fields
+        function calculateQuote() {
+            // Get form values
             const priceInput = document.getElementById('pricePerHour');
             const garbageSelect = document.getElementById('garbageDisposal');
             const pianoSelect = document.getElementById('pianoTime');
-            const extraTravelSelect = document.getElementById('extraTravelTime');
-            
-            if (!priceInput.value) {
-                alert('Please enter a price per hour');
+            const extraTravelSelect = document.getElementById('extraTravel');
+
+            // Validate inputs
+            if (!priceInput.value || priceInput.value <= 0) {
+                alert('Please enter a valid price per hour');
                 return;
             }
             
             if (!garbageSelect.value) {
-                alert('Please select garbage disposal duration');
+                alert('Please select garbage disposal time duration');
                 return;
             }
             
@@ -611,6 +596,7 @@
 
         function showAdjustmentSection() {
             document.getElementById('adjustmentSection').style.display = 'block';
+            document.getElementById('confirmBtn').style.display = 'block';
             updateAdjustedTimeDisplay();
         }
 
@@ -677,9 +663,6 @@
                 // Update with new calculated values
                 currentCalculatedData = data;
                 displayCalculationResults(data);
-                
-                // Show confirm button
-                document.getElementById('confirmBtn').style.display = 'block';
             })
             .catch(error => {
                 console.error('Recalculation error:', error);
@@ -717,7 +700,7 @@
             confirmBtn.disabled = true;
             
             // Send confirmation to your final quote sending workflow
-            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/YOUR-CONFIRMATION-WEBHOOK-ID', {
+            fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/13941c8b-0606-4f7e-af8f-c506a0d70cbf', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
