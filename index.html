@@ -506,6 +506,29 @@
             document.getElementById('confirmBtn').addEventListener('click', confirmQuote);
         }
 
+        function formatMinutesToReadable(minutes) {
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            
+            let timeString = '';
+            if (hours > 0) {
+                timeString += `${hours} hour${hours !== 1 ? 's' : ''}`;
+            }
+            if (mins > 0) {
+                if (hours > 0) timeString += ' ';
+                timeString += `${mins} minute${mins !== 1 ? 's' : ''}`;
+            }
+            if (timeString === '') {
+                timeString = '0 minutes';
+            }
+            
+            return timeString;
+        }
+
+        function minutesToDecimalHours(minutes) {
+            return parseFloat((minutes / 60).toFixed(2));
+        }
+
         function calculateInitialQuote() {
             console.log('Calculate initial quote button clicked...');
             
@@ -535,15 +558,25 @@
                 return;
             }
 
+            const garbageMinutes = parseInt(garbageSelect.value);
+            const extraTravelMinutes = parseInt(extraTravelSelect.value);
+            const pianoMinutes = parseInt(pianoSelect.value);
+
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
                 baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
-                garbageDisposal: parseInt(garbageSelect.value),
-                extraTravelTime: parseInt(extraTravelSelect.value),
-                pianoTime: parseInt(pianoSelect.value),
+                garbageDisposal: garbageMinutes,
+                garbageDisposalReadable: formatMinutesToReadable(garbageMinutes),
+                garbageDisposalDecimal: minutesToDecimalHours(garbageMinutes),
+                extraTravelTime: extraTravelMinutes,
+                extraTravelTimeReadable: formatMinutesToReadable(extraTravelMinutes),
+                extraTravelTimeDecimal: minutesToDecimalHours(extraTravelMinutes),
+                pianoTime: pianoMinutes,
+                pianoTimeReadable: formatMinutesToReadable(pianoMinutes),
+                pianoTimeDecimal: minutesToDecimalHours(pianoMinutes),
                 timestamp: new Date().toISOString()
             };
             
@@ -574,6 +607,10 @@
             })
             .then(data => {
                 console.log('Initial calculation response:', data);
+                console.log('Response type:', typeof data);
+                console.log('quotedHours value:', data.quotedHours);
+                console.log('afterTax value:', data.afterTax);
+                alert('WEBHOOK RESPONSE:\n' + JSON.stringify(data, null, 2));
                 
                 // Expecting: messageID, quoteNumber, companyName, quotedHours, afterTax, airtableID
                 if (data.quotedHours !== undefined && data.afterTax !== undefined) {
