@@ -506,29 +506,6 @@
             document.getElementById('confirmBtn').addEventListener('click', confirmQuote);
         }
 
-        function formatMinutesToReadable(minutes) {
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            
-            let timeString = '';
-            if (hours > 0) {
-                timeString += `${hours} hour${hours !== 1 ? 's' : ''}`;
-            }
-            if (mins > 0) {
-                if (hours > 0) timeString += ' ';
-                timeString += `${mins} minute${mins !== 1 ? 's' : ''}`;
-            }
-            if (timeString === '') {
-                timeString = '0 minutes';
-            }
-            
-            return timeString;
-        }
-
-        function minutesToDecimalHours(minutes) {
-            return parseFloat((minutes / 60).toFixed(2));
-        }
-
         function calculateInitialQuote() {
             console.log('Calculate initial quote button clicked...');
             
@@ -558,25 +535,15 @@
                 return;
             }
 
-            const garbageMinutes = parseInt(garbageSelect.value);
-            const extraTravelMinutes = parseInt(extraTravelSelect.value);
-            const pianoMinutes = parseInt(pianoSelect.value);
-
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
                 baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
-                garbageDisposal: garbageMinutes,
-                garbageDisposalReadable: formatMinutesToReadable(garbageMinutes),
-                garbageDisposalDecimal: minutesToDecimalHours(garbageMinutes),
-                extraTravelTime: extraTravelMinutes,
-                extraTravelTimeReadable: formatMinutesToReadable(extraTravelMinutes),
-                extraTravelTimeDecimal: minutesToDecimalHours(extraTravelMinutes),
-                pianoTime: pianoMinutes,
-                pianoTimeReadable: formatMinutesToReadable(pianoMinutes),
-                pianoTimeDecimal: minutesToDecimalHours(pianoMinutes),
+                garbageDisposal: parseInt(garbageSelect.value),
+                extraTravelTime: parseInt(extraTravelSelect.value),
+                pianoTime: parseInt(pianoSelect.value),
                 timestamp: new Date().toISOString()
             };
             
@@ -607,10 +574,6 @@
             })
             .then(data => {
                 console.log('Initial calculation response:', data);
-                console.log('Response type:', typeof data);
-                console.log('quotedHours value:', data.quotedHours);
-                console.log('afterTax value:', data.afterTax);
-                alert('WEBHOOK RESPONSE:\n' + JSON.stringify(data, null, 2));
                 
                 // Expecting: messageID, quoteNumber, companyName, quotedHours, afterTax, airtableID
                 if (data.quotedHours !== undefined && data.afterTax !== undefined) {
@@ -637,29 +600,9 @@
             });
         }
 
-        function formatHoursDisplay(decimalHours) {
-            const hours = Math.floor(decimalHours);
-            const minutes = Math.round((decimalHours - hours) * 60);
-            
-            let timeString = '';
-            if (hours > 0) {
-                timeString += `${hours} hour${hours !== 1 ? 's' : ''}`;
-            }
-            if (minutes > 0) {
-                if (hours > 0) timeString += ' ';
-                timeString += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
-            }
-            if (timeString === '') {
-                timeString = '0 minutes';
-            }
-            
-            return `${timeString} (${decimalHours.toFixed(2)})`;
-        }
-
         function displayCalculationResults(data) {
             // Update the display with calculated values
-            const quotedHours = parseFloat(data.quotedHours);
-            document.getElementById('totalHoursDisplay').textContent = formatHoursDisplay(quotedHours);
+            document.getElementById('totalHoursDisplay').textContent = `${parseFloat(data.quotedHours).toFixed(2)} hours`;
             document.getElementById('finalPriceDisplay').textContent = `$${parseFloat(data.afterTax).toFixed(2)}`;
             
             // Show results section
@@ -680,7 +623,7 @@
         }
 
         function updateAdjustedTimeDisplay() {
-            document.getElementById('adjustedTimeDisplay').textContent = formatHoursDisplay(adjustedHours);
+            document.getElementById('adjustedTimeDisplay').textContent = `${adjustedHours.toFixed(2)} hrs`;
         }
 
         function recalculateQuote() {
