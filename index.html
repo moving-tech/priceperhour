@@ -289,13 +289,16 @@
         }
 
         .btn-success {
-            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, #ea580c 100%);
             color: white;
+            font-size: 18px;
+            padding: 18px;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
         }
 
         .btn-success:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(234, 88, 12, 0.5);
         }
 
         .btn-warning {
@@ -381,16 +384,27 @@
                             <select id="garbageDisposal" name="garbageDisposal" required>
                                 <option value="">Select duration</option>
                                 <option value="0">0 minutes</option>
+                                <option value="15">15 minutes</option>
                                 <option value="30">30 minutes</option>
                                 <option value="45">45 minutes</option>
                                 <option value="60">1 hour</option>
-                                <option value="90">1 hour and a half</option>
+                                <option value="75">1 hour 15 minutes</option>
+                                <option value="90">1 hour 30 minutes</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="extraTravelTime">Extra travel time (in MINUTES)?</label>
-                            <input type="number" id="extraTravelTime" name="extraTravelTime" placeholder="Enter minutes" min="0" step="1" value="0">
+                            <select id="extraTravelTime" name="extraTravelTime" required>
+                                <option value="">Select duration</option>
+                                <option value="0">0 minutes</option>
+                                <option value="15">15 minutes</option>
+                                <option value="30">30 minutes</option>
+                                <option value="45">45 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="75">1 hour 15 minutes</option>
+                                <option value="90">1 hour 30 minutes</option>
+                            </select>
                         </div>
                     </div>
 
@@ -399,10 +413,12 @@
                         <select id="pianoTime" name="pianoTime" required>
                             <option value="">Select duration</option>
                             <option value="0">0 minutes</option>
+                            <option value="15">15 minutes</option>
                             <option value="30">30 minutes</option>
                             <option value="45">45 minutes</option>
                             <option value="60">1 hour</option>
-                            <option value="90">1 hour and a half</option>
+                            <option value="75">1 hour 15 minutes</option>
+                            <option value="90">1 hour 30 minutes</option>
                         </select>
                     </div>
                 </div>
