@@ -498,7 +498,7 @@
             // Calculate initial quote button
             document.getElementById('calculateBtn').addEventListener('click', calculateInitialQuote);
             
-            // Confirm initial quote button (after first calculation)
+            // Confirm initial quote button
             document.getElementById('confirmInitialBtn').addEventListener('click', () => confirmQuote('confirmInitialBtn'));
             
             // Time adjustment buttons
@@ -508,7 +508,7 @@
             // Recalculate button
             document.getElementById('recalculateBtn').addEventListener('click', recalculateQuote);
             
-            // Confirm button (after recalculation)
+            // Confirm button
             document.getElementById('confirmBtn').addEventListener('click', () => confirmQuote('confirmBtn'));
         }
 
@@ -702,7 +702,7 @@
             });
         }
 
-        function confirmQuote(buttonId = 'confirmBtn') {
+        function confirmQuote(buttonId) {
             if (!currentCalculatedData) {
                 alert('Please calculate the quote first.');
                 return;
@@ -760,12 +760,6 @@
                 console.error('Error:', error);
                 alert('Error sending quote confirmation. Please try again.');
                 confirmBtn.textContent = originalText;
-                confirmBtn.disabled = false;
-            });
-        }
-                console.error('Error:', error);
-                alert('Error sending quote confirmation. Please try again.');
-                confirmBtn.textContent = 'Confirm & Send Quote to Customer';
                 confirmBtn.disabled = false;
             });
         }
