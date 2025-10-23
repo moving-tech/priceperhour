@@ -419,6 +419,9 @@
                         <span>Final Price (incl. taxes):</span>
                         <span id="finalPriceDisplay">$0</span>
                     </div>
+                    <button type="button" id="confirmInitialBtn" class="btn btn-success" style="margin-top: 15px; width: 100%;">
+                        Confirm & Send This Quote
+                    </button>
                 </div>
 
                 <div id="adjustmentSection" class="adjustment-section">
@@ -495,6 +498,9 @@
             // Calculate initial quote button
             document.getElementById('calculateBtn').addEventListener('click', calculateInitialQuote);
             
+            // Confirm initial quote button (after first calculation)
+            document.getElementById('confirmInitialBtn').addEventListener('click', () => confirmQuote('confirmInitialBtn'));
+            
             // Time adjustment buttons
             document.getElementById('decreaseBtn').addEventListener('click', () => adjustTime(-0.25));
             document.getElementById('increaseBtn').addEventListener('click', () => adjustTime(0.25));
@@ -502,8 +508,8 @@
             // Recalculate button
             document.getElementById('recalculateBtn').addEventListener('click', recalculateQuote);
             
-            // Confirm button
-            document.getElementById('confirmBtn').addEventListener('click', confirmQuote);
+            // Confirm button (after recalculation)
+            document.getElementById('confirmBtn').addEventListener('click', () => confirmQuote('confirmBtn'));
         }
 
         function calculateInitialQuote() {
@@ -535,15 +541,19 @@
                 return;
             }
 
+            const garbageMinutes = parseInt(garbageSelect.value);
+            const extraTravelMinutes = parseInt(extraTravelSelect.value);
+            const pianoMinutes = parseInt(pianoSelect.value);
+
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
                 baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
-                garbageDisposal: parseInt(garbageSelect.value),
-                extraTravelTime: parseInt(extraTravelSelect.value),
-                pianoTime: parseInt(pianoSelect.value),
+                garbageTime: parseFloat((garbageMinutes / 60).toFixed(2)),
+                extraTravelTime: parseFloat((extraTravelMinutes / 60).toFixed(2)),
+                pianoTime: parseFloat((pianoMinutes / 60).toFixed(2)),
                 timestamp: new Date().toISOString()
             };
             
@@ -692,16 +702,16 @@
             });
         }
 
-        function confirmQuote() {
+        function confirmQuote(buttonId = 'confirmBtn') {
             if (!currentCalculatedData) {
                 alert('Please calculate the quote first.');
                 return;
             }
             
             const confirmData = {
-                action: "confirm",
-                quoteNumber: quoteId,
                 messageID: messageId,
+                quoteNumber: quoteId,
+                companyName: currentCalculatedData.companyName || "Just Move Vancouver",
                 quotedHours: currentCalculatedData.quotedHours,
                 afterTax: currentCalculatedData.afterTax,
                 airtableID: currentCalculatedData.airtableID,
@@ -709,14 +719,14 @@
             };
             
             console.log('Confirming quote with data:', confirmData);
-            console.log('Including airtableID:', confirmData.airtableID);
             
             // Show loading state
-            const confirmBtn = document.getElementById('confirmBtn');
+            const confirmBtn = document.getElementById(buttonId);
+            const originalText = confirmBtn.textContent;
             confirmBtn.innerHTML = '<span class="loading-spinner"></span>Sending Quote...';
             confirmBtn.disabled = true;
             
-            // Send confirmation to your final quote sending workflow
+            // Send confirmation to final quote sending workflow
             fetch('https://n8n-movers-project-n8n.5gwahg.easypanel.host/webhook/13941c8b-0606-4f7e-af8f-c506a0d70cbf', {
                 method: 'POST',
                 headers: {
@@ -733,14 +743,26 @@
                     
                     // Disable all other buttons
                     document.getElementById('calculateBtn').disabled = true;
-                    document.getElementById('recalculateBtn').disabled = true;
-                    document.getElementById('decreaseBtn').disabled = true;
-                    document.getElementById('increaseBtn').disabled = true;
+                    const recalcBtn = document.getElementById('recalculateBtn');
+                    const decreaseBtn = document.getElementById('decreaseBtn');
+                    const increaseBtn = document.getElementById('increaseBtn');
+                    const confirmInitialBtn = document.getElementById('confirmInitialBtn');
+                    
+                    if (recalcBtn) recalcBtn.disabled = true;
+                    if (decreaseBtn) decreaseBtn.disabled = true;
+                    if (increaseBtn) increaseBtn.disabled = true;
+                    if (confirmInitialBtn && buttonId !== 'confirmInitialBtn') confirmInitialBtn.disabled = true;
                 } else {
                     throw new Error('Failed to send quote confirmation');
                 }
             })
             .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending quote confirmation. Please try again.');
+                confirmBtn.textContent = originalText;
+                confirmBtn.disabled = false;
+            });
+        }
                 console.error('Error:', error);
                 alert('Error sending quote confirmation. Please try again.');
                 confirmBtn.textContent = 'Confirm & Send Quote to Customer';
