@@ -541,19 +541,15 @@
                 return;
             }
 
-            const garbageMinutes = parseInt(garbageSelect.value);
-            const extraTravelMinutes = parseInt(extraTravelSelect.value);
-            const pianoMinutes = parseInt(pianoSelect.value);
-
             const formData = {
                 messageID: messageId,
                 quoteNumber: quoteId,
                 companyName: "Just Move Vancouver",
                 baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
-                garbageTime: parseFloat((garbageMinutes / 60).toFixed(2)),
-                extraTravelTime: parseFloat((extraTravelMinutes / 60).toFixed(2)),
-                pianoTime: parseFloat((pianoMinutes / 60).toFixed(2)),
+                garbageDisposal: parseInt(garbageSelect.value),
+                extraTravelTime: parseInt(extraTravelSelect.value),
+                pianoTime: parseInt(pianoSelect.value),
                 timestamp: new Date().toISOString()
             };
             
