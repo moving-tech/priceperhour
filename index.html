@@ -351,12 +351,12 @@
                 <img src="https://i.imgur.com/3H02zQ5.png" alt="Company Logo">
             </div>
             <h1 class="form-title">Just Move Vancouver</h1>
-            <p class="form-subtitle">Service Quote Calculator - <span id="quoteNumberDisplay">Quote #Q-0000</span></p>
+            <p class="form-subtitle">Service Quote Calculator</p>
         </div>
 
         <div class="form-body">
             <div id="errorMessage" class="error-message">
-                Missing quote parameters. Please use the link provided in your Slack message.
+                Missing required parameters (jobID and baseDrive). Please use the link provided in your Slack message.
             </div>
 
             <form id="movingQuoteForm">
@@ -465,9 +465,7 @@
     <script>
         // Extract URL parameters (global scope)
         const urlParams = new URLSearchParams(window.location.search);
-        const quoteId = urlParams.get('quote') || urlParams.get('quoteId');
-        const pricePerHour = urlParams.get('rate') || urlParams.get('pricePerHour');
-        const messageId = urlParams.get('msg') || urlParams.get('messageId');
+        const jobID = urlParams.get('jobID');
         const baseDrive = parseFloat(urlParams.get('baseDrive')) || 0;
 
         // Global variables for quote state
@@ -477,9 +475,7 @@
 
         // Debug logging
         console.log('URL Parameters:', {
-            quoteId,
-            pricePerHour,
-            messageId,
+            jobID,
             baseDrive,
             fullURL: window.location.href
         });
@@ -494,19 +490,11 @@
             const errorDiv = document.getElementById('errorMessage');
             const form = document.getElementById('movingQuoteForm');
             
-            if (!quoteId || !messageId) {
+            if (!jobID || baseDrive === 0) {
                 errorDiv.style.display = 'block';
                 form.style.opacity = '0.5';
                 form.style.pointerEvents = 'none';
                 return;
-            }
-
-            if (quoteId) {
-                document.getElementById('quoteNumberDisplay').textContent = `Quote #${quoteId}`;
-            }
-
-            if (pricePerHour) {
-                document.getElementById('pricePerHour').value = pricePerHour;
             }
         }
 
@@ -558,8 +546,7 @@
             }
 
             const formData = {
-                messageID: messageId,
-                quoteNumber: quoteId,
+                jobID: jobID,
                 companyName: "Just Move Vancouver",
                 baseDrive: baseDrive,
                 pricePerHour: parseFloat(priceInput.value),
@@ -597,13 +584,11 @@
             .then(data => {
                 console.log('Initial calculation response:', data);
                 
-                // Expecting: messageID, quoteNumber, companyName, quotedHours, afterTax, airtableID
+                // Expecting: jobID, companyName, quotedHours, afterTax
                 if (data.quotedHours !== undefined && data.afterTax !== undefined) {
                     originalQuoteData = data;
                     currentCalculatedData = data;
                     adjustedHours = parseFloat(data.quotedHours);
-                    
-                    console.log('Stored airtableID:', data.airtableID);
                     
                     displayCalculationResults(data);
                     showAdjustmentSection();
@@ -655,22 +640,16 @@
             }
 
             const recalculateData = {
-                messageID: messageId,
-                quoteNumber: quoteId,
+                jobID: jobID,
                 companyName: originalQuoteData.companyName,
                 baseHours: parseFloat(originalQuoteData.baseHours),
                 hoursDifference: adjustedHours - parseFloat(originalQuoteData.quotedHours),
                 newTotalHours: adjustedHours,
-                airtableID: originalQuoteData.airtableID,
                 recalculate: true,
                 timestamp: new Date().toISOString()
             };
             
             console.log('Recalculating with data:', recalculateData);
-            console.log('Base hours:', recalculateData.baseHours);
-            console.log('Hours difference:', recalculateData.hoursDifference);
-            console.log('New total hours:', recalculateData.newTotalHours);
-            console.log('Including airtableID:', recalculateData.airtableID);
             
             // Show loading state
             const recalculateBtn = document.getElementById('recalculateBtn');
@@ -721,12 +700,10 @@
             }
             
             const confirmData = {
-                messageID: messageId,
-                quoteNumber: quoteId,
+                jobID: jobID,
                 companyName: currentCalculatedData.companyName || "Just Move Vancouver",
                 quotedHours: currentCalculatedData.quotedHours,
                 afterTax: currentCalculatedData.afterTax,
-                airtableID: currentCalculatedData.airtableID,
                 timestamp: new Date().toISOString()
             };
             
